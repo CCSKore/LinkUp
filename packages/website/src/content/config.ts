@@ -56,12 +56,18 @@ const decorations = defineCollection({
 		]),
 		elements: z.object({
 			top_left: z.string().optional(),
+			top_right: z.string().optional(),
+			bottom_left: z.string().optional(),
 			bottom_right: z.string().optional(),
+			center: z.string().optional(),
 		}).optional().refine(atLeastOneKey),
 		animation: z.object({
 			border: z.string().optional(),
 			top_left: z.string().optional(),
+			top_right: z.string().optional(),
+			bottom_left: z.string().optional(),
 			bottom_right: z.string().optional(),
+			center: z.string().optional(),
 		}).optional().refine(atLeastOneKey),
 	}),
 })

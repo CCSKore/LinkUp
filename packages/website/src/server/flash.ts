@@ -34,6 +34,7 @@ export const FlashMessages = <const> {
 	// Success
 	S_REGISTERED: 'Welcome!! Thank you for creating your PronounDB account. Start by setting your pronouns, and then consider linking your other accounts. Have a great stay!',
 	S_PRONOUNS_UPDATED: 'Your pronouns have been updated. Changes might take up to a few minutes to propagate.',
+	S_NAME_UPDATED: 'Your name has been updated. Changes might take up to a few minutes to propagate.',
 	S_DECORATION_UPDATED: 'Your decoration has been updated. Changes might take up to a few minutes to propagate.',
 	S_ACC_DELETED: 'Your account has been successfully deleted. Sorry to see you go!',
 
@@ -65,6 +66,8 @@ export const FlashMessages = <const> {
 
 	E_DECORATION_UNKNOWN: 'The decoration you\'ve entered is invalid.',
 	E_DECORATION_LOCKED: 'The decoration you\'ve selected is not available to you.',
+
+	E_NAME_TOO_LONG: 'Your name is too long. It must be 16 characters or less.',
 }
 
 export function handleFlash ({ cookies }: AstroGlobal) {

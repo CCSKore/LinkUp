@@ -41,7 +41,7 @@ import sparklesSvg from '@assets/sparkles.svg?raw'
 import heartSvg from '@assets/2hearts.svg?raw'
 import githubSvg from 'simple-icons/icons/github.svg?raw'
 
-const CATGIRL_DECORATION = await getEntry('decorations', 'catgirl_chief')
+const GALACTIC_DECORATION = await getEntry('decorations', 'galactic')
 const DECORATIONS = [
 	await getEntry('decorations', 'donator_blossom'),
 	await getEntry('decorations', 'donator_ribbon'),
@@ -53,6 +53,34 @@ const DECORATIONS = [
 
 const flash = handleFlash(Astro)
 ---
+<Layout flash={flash} title='Soon'>
+	<PageHeader>
+		<Fragment slot='namespace'>About LinkUp</Fragment>
+		<Fragment>Information</Fragment>
+	</PageHeader>
+
+	<div class='flex flex-col sm:flex-row gap-x-8 gap-y-4 justify-center items-center mt-6 mb-8'>
+		<div class='w-32 h-32 text-white dark:text-gray-800 shrink-0'>
+			<DecorationElement decoration={GALACTIC_DECORATION} background='url(https://cdn.cynthia.dev/avatars/avatar.128.webp)'/>
+		</div>
+		<div>
+			<p class='mb-2'>
+				Hello there! I'm Nova (novampr), I created LinkUp (a fork of PronounDB) to add extra functionality to PronounDB, this includes extra
+				information such as gender!
+			</p>
+			<p class='mb-2'>
+				Please to help with this project don't donate to me (you can't), donate to cynthia for being an amazing developer,
+				I have no intentions of accepting donations at the current time. <Link href='https://pronoundb.org/donate'>Donate here</Link>
+			</p>
+			<p>
+				Cynthia makes a lot of <Link href='https://cynthia.dev'>other things</Link>
+				which you can also support by donating to her, go check it out.
+			</p>
+		</div>
+	</div>
+</Layout>
+
+<!--
 <Layout flash={flash} title='Donate'>
 	<PageHeader>
 		<Fragment slot='namespace'>About PronounDB</Fragment>
@@ -112,3 +140,4 @@ const flash = handleFlash(Astro)
 		I will look into providing other ways of donating that don't require an account in the future.
 	</p>
 </Layout>
+-->

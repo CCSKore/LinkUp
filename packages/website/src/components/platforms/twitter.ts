@@ -31,3 +31,4 @@
 export const name = 'Twitter'
 export const color = '#1DA1F2'
 export { default as icon } from '@assets/twitter.svg?raw'
+export const supported = false

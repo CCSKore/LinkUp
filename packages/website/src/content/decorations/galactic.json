@@ -1,0 +1,22 @@
+{
+	"version": 1,
+	"limited": true,
+	"collection": "Epic people",
+	"name": "Galactic",
+	"color": "#F49898",
+	"border": {
+		"type": "linear-gradient",
+		"angle": 100,
+		"colors": [
+			{ "c": "#dc14e3", "o": "0%" },
+			{ "c": "#15dfe6", "o": "100%" }
+		]
+	},
+	"elements": {
+		"center": "gal_star.svg"
+	},
+	"animation": {
+		"center": "anti-rotate",
+		"border": "rotate"
+	}
+}

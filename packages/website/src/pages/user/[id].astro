@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content'
+
+import { authenticate } from '@server/auth.js'
+import { handleFlash } from '@server/flash.js'
+import { findById } from '@server/database/account.js'
+
+import Layout from '@layouts/Layout.astro'
+import PageHeader from '@components/PageHeader.astro'
+import Platform from '@components/Platform.astro'
+
+import { ObjectId } from 'mongodb'
+import Decoration from '@components/Decoration.astro'
+
+type Platform = { name: string, color: string, icon: string }
+const platforms = import.meta.glob<Platform>('../../components/platforms/*.ts', { eager: true })
+
+const user = await authenticate(Astro)
+if (!user) return Astro.redirect('/login')
+
+const flash = handleFlash(Astro)
+
+const { id } = Astro.params
+let external_user, name, deco: any, decorationsAll, decoration
+try {
+    external_user = await findById(new ObjectId(id))
+    name = external_user?.name
+    if (name === null || name === undefined) {
+        name = id
+    }
+    deco = external_user?.decoration
+    decorationsAll = await getCollection('decorations')
+    decoration = null
+    decorationsAll.forEach((d) => {
+        if (d.id === deco) {
+            decoration = d
+        }
+    })
+} catch (err) {
+    external_user = null
+}
+
+---
+{external_user ? (
+    <Layout flash={flash} title={name}>
+      <PageHeader>{name}'s account</PageHeader>
+      <Decoration decoration={decoration} demo noText/><br/>
+  
+      <div class='grid gap-3 lg:grid-cols-2 mb-8'>
+        {external_user.accounts.map((account) => {
+          const platform = platforms[`../../components/platforms/${account.platform}.ts`]
+          if (!platform) return null
+  
+          return (
+            <Platform color={platform.color}>
+              <Fragment>{account.name}</Fragment>
+              <Fragment slot='icon' set:html={platform.icon}/>
+            </Platform>
+          )
+        })}
+      </div>
+    </Layout>
+) : (
+  <Layout flash={flash} title='Unknown Account'>
+      <PageHeader>Unknown account</PageHeader>
+    </Layout>
+)}

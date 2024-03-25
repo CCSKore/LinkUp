@@ -1,0 +1,75 @@
+---
+import { authenticate, createCsrf } from '@server/auth.js'
+import { handleFlash } from '@server/flash.js'
+
+import Layout from '@layouts/Layout.astro'
+import PageHeader from '@components/PageHeader.astro'
+import Page404 from '@components/Page404.astro'
+
+import { collection } from '@server/database/account'
+import Decoration from '@components/Decoration.astro'
+import { getCollection } from 'astro:content'
+import Platform from '@components/Platform.astro'
+
+type Platform = { name: string, color: string, icon: string }
+const platforms = import.meta.glob<Platform>('../../components/platforms/*.ts', { eager: true })
+
+const decorationsAll = await getCollection('decorations')
+
+const user = await authenticate(Astro)
+if (!user) return Astro.redirect('/404')
+
+const flash = handleFlash(Astro)
+
+const ADMINS: string = import.meta.env.ADMINS
+const isAdmin = ADMINS.split(",").includes(user._id.toString())
+---
+{isAdmin ? (
+    <Layout flash={flash} title='Admin Panel'>
+      <PageHeader>Admin Panel</PageHeader>
+      {collection.find().map((account) => {
+        let name = account.name
+        if (!name) {
+            name = "No name"
+        } else {
+            name = "Name: " + name
+        }
+
+        let decoration = null
+        decorationsAll.forEach((d) => {
+            if (d.id === account.decoration) {
+                decoration = d
+            }
+        })
+        let set1 = account.sets.en[0]
+        let set2 = account.sets.en[1]
+        let set3 = account.sets.en[2]
+        
+        return (
+            <p class='mb-2'>{name}</p>
+            <p class='mb-2'>ID: {account._id.toString()}</p>
+            <Decoration decoration={decoration} demo noText/><br/>
+            <p class='mb-2'>Set 1: {set1}</p>
+            <p class='mb-2'>Set 2: {set2}</p>
+            <p class='mb-2'>Set 3: {set3}</p>
+
+            <div>
+                {account.accounts.map((account) => {
+                    const platform = platforms[`../../components/platforms/${account.platform}.ts`]
+                    if (!platform) return null
+
+                    return (
+                        <Platform color={platform.color}>
+                            <Fragment>{account.name}</Fragment>
+                            <Fragment slot='icon' set:html={platform.icon}/>
+                        </Platform>
+                        <br/>
+                    )
+                })}  
+            </div><br/><hr/><br/>
+        )
+      })}
+    </Layout>
+) : (
+  <Page404/>
+)}

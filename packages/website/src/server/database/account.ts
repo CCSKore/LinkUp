@@ -27,7 +27,7 @@
  */
 
 import type { ObjectId } from 'mongodb'
-import type { Sets } from '@pronoundb/pronouns/sets'
+import type { Sets } from '../../sets.js'
 import database from './database.js'
 
 export const collection = database.collection<Account>('accounts')
@@ -37,6 +37,7 @@ await collection.createIndex({ 'accounts.platform': 1 })
 export type Account = {
 	accounts: ExternalAccount[]
 	decoration: string | null
+	name: string | null | undefined
 	sets: { [locale: string]: Sets }
 
 	availableDecorations: string[]
@@ -51,6 +52,7 @@ export type ExternalAccount = {
 export type PronounsOfUser = {
 	account: ExternalAccount
 	decoration: string
+	name: string
 	sets: { [locale: string]: Sets }
 }
 
@@ -61,6 +63,7 @@ export async function createAccount (from: ExternalAccount) {
 	const result = await collection.insertOne({
 		accounts: [ from ],
 		decoration: null,
+		name: null,
 		sets: {},
 
 		availableDecorations: [],
@@ -132,6 +135,16 @@ export async function updatePronouns (userId: ObjectId, pronouns: Sets, locale: 
 
 export async function deletePronouns (userId: ObjectId, locale: string) {
 	await collection.updateOne({ _id: userId }, { $unset: { [`sets.${locale}`]: 1 } })
+}
+
+// UPDATE NAME
+
+export async function updateName (userId: ObjectId, name: string) {
+	await collection.updateOne({ _id: userId }, { $set: { [`name`]: name } })
+}
+
+export async function deleteName (userId: ObjectId) {
+	await collection.updateOne({ _id: userId }, { $unset: { [`name`]: 1 } })
 }
 
 // UPDATE DECORATIONS

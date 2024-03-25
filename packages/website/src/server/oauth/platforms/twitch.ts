@@ -29,6 +29,8 @@
 import type { ExternalAccount } from '../../database/account.js'
 import type { FlashMessage } from '../../flash.js'
 
+export const disabled = true
+
 export const oauthVersion = 2
 export const clientId = import.meta.env.OAUTH_TWITCH_CLIENT
 export const clientSecret = import.meta.env.OAUTH_TWITCH_SECRET

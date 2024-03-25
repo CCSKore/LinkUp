@@ -33,24 +33,16 @@ import DecorationElement from './DecorationElement.astro'
 
 import sparklesSvg from '@assets/sparkles.svg?raw'
 import checkedSvg from 'feather-icons/dist/icons/check-circle.svg?raw'
-import slashSvg from 'feather-icons/dist/icons/slash.svg?raw'
-
-const DecorationElements = import.meta.glob('../assets/decorations/*.svg', { as: 'raw' })
 
 export interface Props {
-	decoration: CollectionEntry<'decorations'> | null
+	decoration: CollectionEntry<'decorations'> | null | undefined
 	selected?: boolean
 	demo?: boolean
+	noText?: boolean
 }
 
-const { decoration, selected, demo } = Astro.props
+const { decoration, selected, demo, noText } = Astro.props
 const id = `decoration-${Math.random().toString(16).slice(2, 10)}`
-
-const topLeft = decoration?.data.elements?.top_left
-const bottomRight = decoration?.data.elements?.bottom_right
-const animationBorder = decoration?.data.animation?.border
-const animationTopLeft = decoration?.data.animation?.top_left
-const animationBottomRight = decoration?.data.animation?.bottom_right
 
 type ColorDef = { c: string, o: string }
 function definitionToColor (def: ColorDef[]) {
@@ -110,7 +102,7 @@ const Element = demo ? 'div' : 'label'
 		<DecorationElement decoration={decoration}/>
 	</div>
 
-	{decoration?.data.limited && (
+	{decoration?.data.limited && !noText && (
 		<div class='limited flex items-center gap-2'>
 			<div class='shrink-0 w-4'>
 				<Fragment set:html={sparklesSvg}/>

@@ -26,25 +26,40 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Astro only uses process.env for variables visible during build time
-// As I do not want anything from .env to be inlined in server bundle, I load everything with dotenv
-import 'dotenv/config'
+import type { APIContext } from 'astro'
+import { authenticate, validateCsrf } from '@server/auth.js'
+import { updateName, deleteName } from '@server/database/account.js'
+import { setFlash } from '@server/flash.js'
 
-import { defineConfig } from 'astro/config'
-import tailwind from '@astrojs/tailwind'
-import node from '@astrojs/node'
+export async function POST (ctx: APIContext) {
+	const user = await authenticate(ctx)
+	if (!user) return new Response('401: Unauthorized', { status: 401 })
 
-export default defineConfig({
-	site: process.env.NODE_ENV === 'development'
-		? 'http://86.27.73.108:4321/'
-		: 'http:/86.27.73.108:8080/',
-	output: 'server',
-	integrations: [ tailwind() ],
-	adapter: node({ mode: 'standalone' }),
-	vite: {
-		build: {
-			// I don't like inlined assets
-			assetsInlineLimit: 0,
-		},
-	},
-})
+	const body = await ctx.request.formData().catch(() => null)
+	const csrfToken = body?.get('csrfToken')
+	let name = body?.get('name')
+
+	if (typeof csrfToken !== 'string' || !validateCsrf(ctx, csrfToken)) {
+		setFlash(ctx, 'E_CSRF')
+		return ctx.redirect('/me')
+	}
+
+	if (typeof name !== 'string') {
+		return new Response('400: Bad request', { status: 400 })
+	}
+
+	name = name.trim()
+
+	if (name.length > 16) {
+		setFlash(ctx, 'E_NAME_TOO_LONG')
+		return ctx.redirect('/me')
+	}
+
+	await (name.length ? updateName(user._id, name) : deleteName(user._id))
+	setFlash(ctx, 'S_NAME_UPDATED')
+	return ctx.redirect('/me')
+}
+
+export function ALL () {
+	return new Response('405: Method not allowed', { status: 405 })
+}

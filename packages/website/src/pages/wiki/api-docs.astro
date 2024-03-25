@@ -27,8 +27,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { PronounSets } from '@pronoundb/pronouns/sets'
-import { formatPronounSet } from '@pronoundb/pronouns/formatter'
+import { PronounSets } from '../../sets'
+import { formatPronounSet } from '../../formatter'
 
 import { handleFlash } from '@server/flash.js'
 import { providers } from '@server/oauth/providers.js'
@@ -48,7 +48,7 @@ const flash = handleFlash(Astro)
 ---
 <Layout flash={flash} title='API v2 Documentation'>
 	<PageHeader>
-		<Fragment slot='namespace'>About PronounDB</Fragment>
+		<Fragment slot='namespace'>About LinkUp</Fragment>
 		<Fragment>API v2 Documentation</Fragment>
 	</PageHeader>
 
@@ -98,7 +98,7 @@ const flash = handleFlash(Astro)
 			}
 		}}
 	>
-		<p class='mb-4'>Looks up the data saved in PronounDB for one or more (up to 50) account for a given platform.</p>
+		<p class='mb-4'>Looks up the data saved in LinkUp for one or more (up to 50) account for a given platform.</p>
 		<p class='mb-4'>The response is a map of IDs to the corresponding data. If an ID is not in our database, it will not be present in the response.</p>
 		<p class='mb-4'>It is <b>strongly recommended</b> to fetch IDs in bulk when possible and applicable, to help prevent hitting and potential rate limits.</p>
 	</ApiRequest>
@@ -138,16 +138,16 @@ const flash = handleFlash(Astro)
 			}
 		}}
 	>
-		<p class='mb-4'>Looks up the data saved for a given PronounDB user. Will return a 404 Not Found error if the user does not exist.</p>
+		<p class='mb-4'>Looks up the data saved for a given LinkUp user. Will return a 404 Not Found error if the user does not exist.</p>
 	</ApiRequest>
 
 
 	<ApiRequest
 		method='GET'
-		path={[ '/shields/', '[pronoundbId]', '.json?capitalize=', '[capitalize]', '&locale=', '[locale]' ]}
+		path={[ '/shields/', '[linkupId]', '.json?capitalize=', '[capitalize]', '&locale=', '[locale]' ]}
 
 		typeParams={{
-			pronoundbId: {
+			linkupId: {
 				optional: false,
 				type: 'string',
 			},

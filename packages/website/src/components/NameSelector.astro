@@ -1,3 +1,4 @@
+---
 /*
  * Copyright (c) Cynthia Rey et al., All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
@@ -26,25 +27,46 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Astro only uses process.env for variables visible during build time
-// As I do not want anything from .env to be inlined in server bundle, I load everything with dotenv
-import 'dotenv/config'
+const { name, csrf } = Astro.props
 
-import { defineConfig } from 'astro/config'
-import tailwind from '@astrojs/tailwind'
-import node from '@astrojs/node'
+---
+<form class='mb-8' method='post' action='/me/update-name' class='nojs' data-name-form>
+	<input type='hidden' name='csrfToken' value={csrf}/>
 
-export default defineConfig({
-	site: process.env.NODE_ENV === 'development'
-		? 'http://86.27.73.108:4321/'
-		: 'http:/86.27.73.108:8080/',
-	output: 'server',
-	integrations: [ tailwind() ],
-	adapter: node({ mode: 'standalone' }),
-	vite: {
-		build: {
-			// I don't like inlined assets
-			assetsInlineLimit: 0,
-		},
-	},
-})
+	<input class="input-text border-gray-700" type="text" name="name" value={name}><br/><br/>
+
+	<button class='text-green-700 border-green-700 dark:text-green-400 dark:border-green-400 font-semibold py-1 px-3 border rounded' type='submit'>
+		Save changes
+	</button>
+</form>
+
+<style>
+	.nojs-hidden {
+		display: none;
+	}
+    .input-text {
+        border: solid 1px;
+        border-radius: 3px;
+        background: none;
+        transition: border-radius .2s ease;
+    }
+    .input-text:focus {
+        border: solid 1px;
+        border-radius: 7px;
+        outline: none;
+    }
+</style>
+
+<script>
+	for (const form of document.querySelectorAll<HTMLFormElement>('[data-name-form]')) {
+		for (const hidden of form.querySelectorAll('.nojs-hidden')) {
+			hidden.classList.remove('nojs-hidden')
+			hidden.setAttribute('aria-hidden', 'false')
+		}
+
+		const submitButton = form.querySelector<HTMLElement>('button')!
+		submitButton.classList.add('hidden')
+
+		form.addEventListener('change', () => submitButton.classList.remove('hidden'), { once: true })
+	}
+</script>

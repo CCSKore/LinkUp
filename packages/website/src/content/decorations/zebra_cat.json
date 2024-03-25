@@ -1,0 +1,23 @@
+{
+	"version": 1,
+	"limited": true,
+	"collection": "Epic people",
+	"name": "Zebra Cat",
+	"color": "#000000",
+	"border": {
+		"type": "linear-gradient",
+		"angle": 100,
+		"colors": [
+			{ "c": "#000000", "o": "0%" },
+            { "c": "#000000", "o": "50%" },
+            { "c": "#FFFFFF", "o": "51%" },
+			{ "c": "#FFFFFF", "o": "100%" }
+		]
+	},
+	"animation": {
+		"border": "rotate"
+	},
+    "elements": {
+        "center": "csharp.svg"
+    }
+}

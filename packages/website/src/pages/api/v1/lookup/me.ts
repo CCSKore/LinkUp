@@ -27,7 +27,7 @@
  */
 
 import type { APIContext } from 'astro'
-import { transformSetsToIdentifier } from '@pronoundb/pronouns/legacy'
+import { transformSetsToIdentifier } from '../../../../legacy.ts'
 
 import { authenticate } from '@server/auth.js'
 import { ApiCallVersionCounter } from '@server/metrics.js'

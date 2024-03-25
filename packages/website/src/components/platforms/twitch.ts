@@ -29,3 +29,4 @@
 export const name = 'Twitch'
 export const color = '#9146FF'
 export { default as icon } from 'simple-icons/icons/twitch.svg?raw'
+export const supported = false

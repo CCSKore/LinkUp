@@ -1,0 +1,15 @@
+{
+	"version": 1,
+	"limited": true,
+	"collection": "Epic people",
+	"name": "Wing",
+	"color": "#F49898",
+	"border": {
+		"type": "solid",
+		"angle": 100,
+		"color": "#abdeff"
+	},
+	"elements": {
+		"top_left": "wing.svg"
+	}
+}

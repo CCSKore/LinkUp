@@ -34,7 +34,7 @@ import alertSvg from 'feather-icons/dist/icons/alert-circle.svg?raw'
 import checkSvg from 'feather-icons/dist/icons/check-circle.svg?raw'
 
 export interface Props {
-	title?: string
+	title?: string | null | undefined
 	description?: string
 	flash: { id: string, message: string } | undefined
 }
@@ -43,7 +43,7 @@ const DEFAULT_DESCRIPTION = 'PronounDB is a browser extension that helps people 
 
 const { title: t, description: d, flash } = Astro.props
 const description = d || DEFAULT_DESCRIPTION
-const title = t ? `${t} • PronounDB` : 'PronounDB'
+const title = t ? `${t} - LinkUp` : 'LinkUp'
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site)
 
 const [ flashIcon, flashColor ] = flash?.id.startsWith('S_')
@@ -61,7 +61,7 @@ const [ flashIcon, flashColor ] = flash?.id.startsWith('S_')
     <meta name='description' content={description}/>
     <link rel='canonical' href={canonicalUrl}/>
 
-    <meta property='og:site_name' content='PronounDB'/>
+    <meta property='og:site_name' content='LinkUp'/>
     <meta property='og:type' property='og:type' content='website'>
     <meta property='og:url' content={canonicalUrl}/>
     <meta property='og:title' content={title}/>

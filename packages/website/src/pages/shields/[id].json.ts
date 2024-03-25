@@ -28,7 +28,7 @@
 
 import type { APIContext } from 'astro'
 import { ObjectId } from 'mongodb'
-import { formatPronouns } from '@pronoundb/pronouns/formatter'
+import { formatPronouns } from '../../formatter.ts'
 import { findById } from '@server/database/account.js'
 
 export async function GET ({ url, params }: APIContext) {

@@ -27,7 +27,7 @@
  */
 
 import type { APIContext } from 'astro'
-import { transformSetsToIdentifier } from '@pronoundb/pronouns/legacy'
+import { transformSetsToIdentifier } from '../../../../legacy.ts'
 
 import { LookupRequestsCounter, LookupIdsCounter, LookupHitCounter, ApiCallVersionCounter } from '@server/metrics.js'
 import { findPronounsOf } from '@server/database/account.js'

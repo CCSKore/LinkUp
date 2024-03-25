@@ -35,6 +35,7 @@ import Layout from '@layouts/Layout.astro'
 import PageHeader from '@components/PageHeader.astro'
 import Link from '@components/Link.astro'
 import PronounsSelector from '@components/PronounsSelector.astro'
+import NameSelector from '@components/NameSelector.astro'
 import DecorationSelector from '@components/DecorationSelector.astro'
 import Platform from '@components/Platform.astro'
 
@@ -54,6 +55,9 @@ const isDonator = user.availableDecorations.find((d) => d.startsWith('donator_')
 
 const flash = handleFlash(Astro)
 const csrf = createCsrf(Astro)
+
+const ADMINS: string = import.meta.env.ADMINS
+const isAdmin = ADMINS.split(",").includes(user._id.toString())
 ---
 <Layout flash={flash} title='My Account'>
 	<noscript>
@@ -63,7 +67,12 @@ const csrf = createCsrf(Astro)
 		</p>
 	</noscript>
 
+	{isAdmin ? (
+		<PageHeader><Link href='/admin'>My Account</Link></PageHeader>
+	) : (
 	<PageHeader>My Account</PageHeader>
+	)}
+
 	<p class='mb-1'>
 		Welcome back! Want to change your pronouns, or link a new account? You're at the right place!
 	</p>
@@ -72,6 +81,9 @@ const csrf = createCsrf(Astro)
 		cases, users may have pronouns in their local cache and will need to refresh their page to see the change take
 		effect (e.g.: on a Twitch chat)
 	</p>
+
+	<h2 class='text-xl font-bold mb-2'>Name</h2>
+	<NameSelector name={user.name} csrf={csrf}/>
 
 	<h2 class='text-xl font-bold mb-2'>Pronouns</h2>
 	<p class='mb-2'>
@@ -147,7 +159,7 @@ const csrf = createCsrf(Astro)
 	</div>
 
 	<h2 class='text-xl font-bold mb-2'>Advanced settings</h2>
-	<p class='mb-1'>PronounDB ID: <code class='bg-gray-200 px-1 rounded dark:bg-gray-700'>{user._id.toString()}</code></p>
+	<p class='mb-1'>LinkUp ID: <code class='bg-gray-200 px-1 rounded dark:bg-gray-700'>{user._id.toString()}</code></p>
 	<p class='mb-4'>This ID may be useful for some of the <Link href='/wiki/api-docs'>API endpoints</Link>.</p>
 
 	<h3 class='text-lg font-semibold mb-2'>Delete my account</h3>

@@ -13,7 +13,9 @@
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro build",
-		"preview": "astro preview"
+		"preview": "astro preview",
+		"disabletb": "astro preferences disable devToolbar",
+		"enabletb": "astro preferences enable devToolbar"
 	},
 	"dependencies": {
 		"fast-jwt": "^3.3.2",

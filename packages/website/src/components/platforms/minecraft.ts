@@ -33,3 +33,4 @@ export const color = '#854F2B'
 export const icon = minecraft.replace(/<!--(.|\n)*-->/, '')
 
 export const thirdPartyOnly = true
+export const supported = false

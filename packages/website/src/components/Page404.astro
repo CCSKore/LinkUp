@@ -1,3 +1,4 @@
+---
 /*
  * Copyright (c) Cynthia Rey et al., All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
@@ -26,25 +27,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Astro only uses process.env for variables visible during build time
-// As I do not want anything from .env to be inlined in server bundle, I load everything with dotenv
-import 'dotenv/config'
+import { handleFlash } from '@server/flash.js'
+import { data } from '@assets/cat-facts.json'
 
-import { defineConfig } from 'astro/config'
-import tailwind from '@astrojs/tailwind'
-import node from '@astrojs/node'
+import Layout from '@layouts/Layout.astro'
+import PageHeader from '@components/PageHeader.astro'
+import Link from '@components/Link.astro'
 
-export default defineConfig({
-	site: process.env.NODE_ENV === 'development'
-		? 'http://86.27.73.108:4321/'
-		: 'http:/86.27.73.108:8080/',
-	output: 'server',
-	integrations: [ tailwind() ],
-	adapter: node({ mode: 'standalone' }),
-	vite: {
-		build: {
-			// I don't like inlined assets
-			assetsInlineLimit: 0,
-		},
-	},
-})
+const fact = data[Math.random() * data.length | 0]
+const flash = handleFlash(Astro)
+---
+<Layout flash={flash} title='404 Not Found'>
+	<PageHeader>Seems like you're lost</PageHeader>
+	<div class='mb-2'>
+		There's nothing here... But there, have a fact about cats: {fact}
+	</div>
+	<Link href='/'>Go home</Link>
+</Layout>

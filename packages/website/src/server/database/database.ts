@@ -28,7 +28,7 @@
 
 import { MongoClient } from 'mongodb'
 
-const client = new MongoClient(import.meta.env.MONGO_DSN, { appName: 'pronoundb-backend' })
+const client = new MongoClient(import.meta.env.MONGO_DSN, { appName: 'linkup-backend' })
 await client.connect()
 
 export default client.db()

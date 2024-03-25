@@ -41,10 +41,16 @@ export interface Props {
 const { decoration, background } = Astro.props
 
 const topLeft = decoration?.data.elements?.top_left
+const topRight = decoration?.data.elements?.top_right
+const bottomLeft = decoration?.data.elements?.bottom_left
 const bottomRight = decoration?.data.elements?.bottom_right
+const center = decoration?.data.elements?.center
 const animationBorder = decoration?.data.animation?.border
 const animationTopLeft = decoration?.data.animation?.top_left
+const animationTopRight = decoration?.data.animation?.top_right
+const animationBottomLeft = decoration?.data.animation?.bottom_left
 const animationBottomRight = decoration?.data.animation?.bottom_right
+const animationCenter = decoration?.data.animation?.center
 
 type ColorDef = { c: string, o: string }
 function definitionToColor (def: ColorDef[]) {
@@ -97,6 +103,24 @@ switch (decoration?.data.border.type) {
 						set:html={DecorationElements[`../assets/decorations/${topLeft}`]()}
 					/>
 				)}
+				{topRight && (
+					<div
+						class:list={[
+							'w-10 absolute top-[15%] right-[15%] absolute translate-x-1/2 -translate-y-1/2 element-top',
+							animationTopRight && `animation-${animationTopRight}`
+						]}
+						set:html={DecorationElements[`../assets/decorations/${topRight}`]()}
+					/>
+				)}
+				{bottomLeft && (
+					<div
+						class:list={[
+							'w-10 absolute bottom-[15%] left-[15%] absolute -translate-x-1/2 translate-y-1/2 element-bottom',
+							animationBottomLeft && `animation-${animationBottomLeft}`
+						]}
+						set:html={DecorationElements[`../assets/decorations/${bottomLeft}`]()}
+					/>
+				)}
 				{bottomRight && (
 					<div
 						class:list={[
@@ -104,6 +128,15 @@ switch (decoration?.data.border.type) {
 							animationBottomRight && `animation-${animationBottomRight}`
 						]}
 						set:html={DecorationElements[`../assets/decorations/${bottomRight}`]()}
+					/>
+				)}
+				{center && (
+					<div
+						class:list={[
+							'w-10 absolute bottom-[50%] right-[50%] absolute translate-x-1/2 translate-y-1/2 element-bottom',
+							animationCenter && `animation-${animationCenter}`
+						]}
+						set:html={DecorationElements[`../assets/decorations/${center}`]()}
 					/>
 				)}
 			</Fragment>
@@ -122,5 +155,17 @@ switch (decoration?.data.border.type) {
 	@keyframes rotate {
 		from { transform: rotate(0); }
 		to { transform: rotate(360deg); }
+	}
+
+	.decoration-border.animation-anti-rotate,
+	.element-top.animation-anti-rotate :global(svg),
+	.element-bottom.animation-anti-rotate :global(svg) {
+		border-color: transparent;
+		animation: anti-rotate 7s linear infinite;
+	}
+
+	@keyframes anti-rotate {
+		from { transform: rotate(360deg); }
+		to { transform: rotate(0); }
 	}
 </style>

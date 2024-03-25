@@ -27,8 +27,8 @@
  */
 
 import type { APIContext } from 'astro'
-import type { Sets } from '@pronoundb/pronouns/sets'
-import { PronounSets } from '@pronoundb/pronouns/sets'
+import type { Sets } from '../../sets.ts'
+import { PronounSets } from '../../sets.ts'
 import { authenticate, validateCsrf } from '@server/auth.js'
 import { updatePronouns, deletePronouns } from '@server/database/account.js'
 import { setFlash } from '@server/flash.js'

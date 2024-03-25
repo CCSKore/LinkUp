@@ -27,9 +27,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import type { Sets } from '@pronoundb/pronouns/sets'
-import { PronounSets } from '@pronoundb/pronouns/sets'
-import { formatPronounSet } from '@pronoundb/pronouns/formatter'
+import type { Sets } from '../sets'
+import { PronounSets } from '../sets'
+import { formatPronounSet } from '../formatter'
 import PronounsSelectorItem from './PronounsSelectorItem.astro'
 
 export interface Props {
@@ -94,9 +94,9 @@ if (!def) throw new Error('Invalid locale')
 </style>
 
 <script>
-	import type { Sets } from '@pronoundb/pronouns/sets'
-	import { PronounSets } from '@pronoundb/pronouns/sets'
-	import { formatPronouns, formatPronounsShort, formatPronounsLong } from '@pronoundb/pronouns/formatter'
+	import type { Sets } from '../sets.ts'
+	import { PronounSets } from '../sets.js'
+	import { formatPronouns, formatPronounsShort, formatPronounsLong } from '../formatter.js'
 
 	for (const form of document.querySelectorAll<HTMLFormElement>('[data-pronouns-picker-form]')) {
 		for (const hidden of form.querySelectorAll('.nojs-hidden')) {
